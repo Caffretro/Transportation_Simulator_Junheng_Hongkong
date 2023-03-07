@@ -116,12 +116,15 @@ def show_new_order(pth):
 if __name__ == '__main__':
     # show_new_order("./input1/order-11-13-frac=0.1.pickle")
     # Print out the pickle file
-    data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
+    # data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
     # data = pickle.load(open("./input_Hong_Kong/hongkong_driver_info_11_29.pickle", 'rb'))
-    for item in data:
-        if data[item][0][13] or data[item][0][14]:
-            print(data[item][0][13])
-            print(data[item][0][14])
-    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
-    # with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #     print(unpickled_data)
+    # for item in data:
+    #     if data[item][0][13] or data[item][0][14]:
+    #         print(data[item][0][13])
+    #         print(data[item][0][14])
+    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
+    with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        datalist = list(unpickled_data.keys())
+        # print(len(unpickled_data[629880][0]))
+        datalist.sort()
+        print(datalist[100])

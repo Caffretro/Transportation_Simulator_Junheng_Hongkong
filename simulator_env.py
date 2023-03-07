@@ -164,9 +164,10 @@ class Simulator:
                     request_list.append(j)
             except:
                 pass
+        # Hong Kong data added one list called extra
         column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                        'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
-                       'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob']
+                       'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
 
         if self.rl_mode == 'matching':
             self.end_of_episode = 0  # rl for matching
@@ -452,7 +453,7 @@ class Simulator:
 
             column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                            'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
-                           'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob']
+                           'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
             if len(sampled_requests) > 0:
                 itinerary_segment_dis_list = []
                 itinerary_node_list = np.array(sampled_requests)[:, 11]
@@ -529,6 +530,7 @@ class Simulator:
                 # wait_info = wait_info.drop(columns=['trip_distance'])
                 # wait_info = wait_info.drop(columns=['designed_reward'])
                 self.wait_requests = pd.concat([self.wait_requests, wait_info], ignore_index=True)
+                print("order generation added to wait_requests, now we have {}".format(len(self.wait_requests))) # TODO: delete this print
 
         return
 
@@ -567,7 +569,7 @@ class Simulator:
             weight_array = np.ones(len(sampled_requests))  # rl for matching
             column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                 'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
-                'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob']
+                'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
             if len(sampled_requests) > 0:
                 itinerary_segment_dis_list = []
                 itinerary_node_list = np.array(sampled_requests)[:, 11]
@@ -602,10 +604,11 @@ class Simulator:
                 for dis in trip_distance:
                     # Manhattan pricing rule
                     # reward_list.append((2.5 + 0.5 * int(max(0,dis*1000-322)/322)*(1 + env_params['price_increasing_percentage'])))
-                    # reward_list.append(below 7km rule if within 7 km else 93.5 + 6.5)
-                    reward_list.append((27 + 1.9 * int(max(0, dis * 1000 - 2000) / 200))
-                                        if dis > 7 else 
-                                       (93.5 + 1.3 * (dis * 1000 - 7000) / 200))
+                    
+                    # Hong Kong pricing rule
+                    reward = (27 + 1.9 * int(max(0, dis * 1000 - 2000) / 200))if dis > 7 else (93.5 + 1.3 * (dis * 1000 - 7000) / 200)
+                    reward_list.append(reward)
+                    
                     # For first 2 kilo, 27 will be charged
                     # Between 2 - 7 kilo, every kilo 9.5
                     # More than 7 kilo, every kilo 6.5 (when total price exceeds 93.5)
@@ -686,8 +689,9 @@ class Simulator:
                 #wait_info['maximum_price_passenger_can_tolerate'] += skewed_normal_distribution(price_increase_params[0],price_increase_params[1],price_increase_params[2],price_increase_params[3],price_increase_params[4],len(wait_info))
                                
                 self.wait_requests = pd.concat([self.wait_requests, wait_info], ignore_index=True)
+                print("Current wait requests after added: {}".format(len(self.wait_requests))) # TODO: delete this print
             
-                # statistics
+                # # statistics
                 self.total_request_num += wait_info.shape[0]
                 self.long_requests_num += wait_info[wait_info['trip_time'] >= 600].shape[0]
                 self.short_requests_num += wait_info[wait_info['trip_time'] <= 300].shape[0]
@@ -1151,6 +1155,8 @@ class Simulator:
         # Step 1: order dispatching
         wait_requests = deepcopy(self.wait_requests)
         driver_table = deepcopy(self.driver_table)
+        # TODO: delete the print below
+        # print("len of wait_requests:{}, len of driver_table: {}".format(len(wait_requests), len(driver_table)))
         time1 = time.time()
         # print("order duplicated flag:",wait_requests.order_id.duplicated().sum())
         matched_pair_actual_indexes, matched_itinerary = order_dispatch(wait_requests, driver_table,
@@ -1179,6 +1185,8 @@ class Simulator:
         # TJ
         if len(df_new_matched_requests) != 0:
             self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
+            print("added reward in rl step")
+
             # print("mean reward",df_new_matched_requests['designed_reward'].mean())
             # print("max reward",df_new_matched_requests['designed_reward'].max())
             # print("min reward",df_new_matched_requests['designed_reward'].min())
@@ -1245,6 +1253,7 @@ class Simulator:
         # TJ
         if len(df_new_matched_requests) != 0:
             self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
+            print("added reward in step 1")
         else:
             self.total_reward += 0
         # TJ

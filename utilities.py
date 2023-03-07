@@ -632,6 +632,7 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
     matched_itinerary = []
 
     if num_wait_request > 0 and num_idle_driver > 0:
+        
         if dispatch_method == 'LD':
             # generate order driver pairs and corresponding itinerary
             request_array_temp = wait_requests.loc[:, ['origin_lng', 'origin_lat', 'order_id', 'weight']]
@@ -643,6 +644,7 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
                 # weight转换为最大pickup distance - 当前pickup distance
                 request_array[:,-1] = maximal_pickup_distance - dis_array + 1
             flag = np.where(dis_array <= maximal_pickup_distance)[0]
+            print("len of flag: {d}", len(flag)) # TODO: delete this print
             if len(flag) > 0:
                 order_driver_pair = np.vstack(
                     [request_array[flag, 2], driver_loc_array[flag, 2], request_array[flag, 3], dis_array[flag]]).T
@@ -669,6 +671,12 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
                 #     dis_array_new.append(dis_array[index])
 
                 matched_itinerary = [itinerary_node_list, itinerary_segment_dis_list, dis_array]
+            
+            # TODO: delete the print above
+    else:
+        # FIXME: both are 0, cannot enter the LD algorithm for matching
+        # print("num_wait_request: {s}, num_idle_driver: {s} ", num_wait_request, num_idle_driver)
+        pass
     return matched_pair_actual_indexs, np.array(matched_itinerary)
 
 
