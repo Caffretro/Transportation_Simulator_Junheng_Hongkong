@@ -1191,7 +1191,7 @@ class Simulator:
         # TJ
         if len(df_new_matched_requests) != 0:
             self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
-            # print("added reward in rl step")
+            print("added reward in rl step") # TODO: delete this test print
 
             # print("mean reward",df_new_matched_requests['designed_reward'].mean())
             # print("max reward",df_new_matched_requests['designed_reward'].max())
