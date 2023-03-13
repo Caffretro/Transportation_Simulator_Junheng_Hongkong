@@ -1,6 +1,6 @@
 env_params = {
 # time interval in seconds
-'t_initial' :28800,   # 3-9
+'t_initial' :0,   # 3-9
 't_end' : 86400, 
 'delta_t' : 5,  # s
 'vehicle_speed' : 22.788,   # km / h

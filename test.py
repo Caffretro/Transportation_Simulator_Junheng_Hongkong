@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 import pandas as pd
+import sys
 
 
 # def calculate_match_rate():
@@ -136,9 +137,16 @@ if __name__ == '__main__':
         #    'matched_order_id', 'total_idle_time', 'time_to_last_cruising',
         #    'current_road_node_index', 'remaining_time_for_current_node',
         #    'itinerary_node_list', 'itinerary_segment_dis_list']
-        for entry in unpickled_data["status"]:
-            if entry == 0:
-                print("status is 0")
+        # for entry in unpickled_data["status"]:
+        #     if entry == 3:
+        #         print("status is 3")
+
+        print(len(unpickled_data["start_time"]))
+        # time_max = sys.maxsize
+        # for entry in unpickled_data["start_time"]:
+        #     if entry < time_max:
+        #         time_max = entry
+        # print(time_max)
         
         
         

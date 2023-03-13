@@ -652,25 +652,25 @@ class Simulator:
                 wait_info['status'] = 0
                 wait_params = None
                 # # comment the code below if training Manhattan data
-                # if self.time >= 25200 and self.time <=32400:
-                #     wait_params = wait_time_params_dict['morning']                
-                #     pick_params = pick_time_params_dict['morning']
-                #     # price_increase_params = price_increase_params_dict['morning']
-                # elif self.time >= 61200 and self.time <= 68400:
-                #     wait_params = wait_time_params_dict['evening']
-                #     pick_params = pick_time_params_dict['evening']
-                #     # price_increase_params = price_increase_params_dict['evening']
-                # elif self.time >= 0 and self.time <= 18000:
-                #     wait_params = wait_time_params_dict['midnight_early']
-                #     pick_params = pick_time_params_dict['midnight_early']
-                #     # price_increase_params = price_increase_params_dict['midnight_early']
-                # else:
-                #     wait_params = wait_time_params_dict['other']
-                #     pick_params = pick_time_params_dict['other']
-                #     # price_increase_params = price_increase_params_dict['other']
+                if self.time >= 25200 and self.time <=32400:
+                    wait_params = wait_time_params_dict['morning']                
+                    pick_params = pick_time_params_dict['morning']
+                    # price_increase_params = price_increase_params_dict['morning']
+                elif self.time >= 61200 and self.time <= 68400:
+                    wait_params = wait_time_params_dict['evening']
+                    pick_params = pick_time_params_dict['evening']
+                    # price_increase_params = price_increase_params_dict['evening']
+                elif self.time >= 0 and self.time <= 18000:
+                    wait_params = wait_time_params_dict['midnight_early']
+                    pick_params = pick_time_params_dict['midnight_early']
+                    # price_increase_params = price_increase_params_dict['midnight_early']
+                else:
+                    wait_params = wait_time_params_dict['other']
+                    pick_params = pick_time_params_dict['other']
+                    # price_increase_params = price_increase_params_dict['other']
 
-                # wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60
-                # wait_info['maximum_pickup_time_passenger_can_tolerate'] = skewed_normal_distribution(pick_params[0],pick_params[1],pick_params[2],pick_params[3],pick_params[4],len(wait_info)) * 60
+                wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60
+                wait_info['maximum_pickup_time_passenger_can_tolerate'] = skewed_normal_distribution(pick_params[0],pick_params[1],pick_params[2],pick_params[3],pick_params[4],len(wait_info)) * 60
 
                 wait_info['weight'] = weight_array # rl for matching
                 # add extra info of orders
@@ -1019,6 +1019,7 @@ class Simulator:
         # for all the finished tasks
         self.driver_table.loc[loc_finished & (~ loc_pickup), 'remaining_time'] = 0
         con_not_pickup = loc_finished & (loc_actually_cruising | loc_delivery | loc_reposition)
+        # print(con_not_pickup) # TODO: delete this print
         con_not_pickup_actually_cruising = loc_finished & (loc_delivery | loc_reposition)
         self.driver_table.loc[con_not_pickup, 'lng'] = self.driver_table.loc[con_not_pickup, 'target_loc_lng'].values
         self.driver_table.loc[con_not_pickup, 'lat'] = self.driver_table.loc[con_not_pickup, 'target_loc_lat'].values
@@ -1190,7 +1191,7 @@ class Simulator:
         # TJ
         if len(df_new_matched_requests) != 0:
             self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
-            print("added reward in rl step")
+            # print("added reward in rl step")
 
             # print("mean reward",df_new_matched_requests['designed_reward'].mean())
             # print("max reward",df_new_matched_requests['designed_reward'].max())

@@ -488,7 +488,7 @@ def get_exponential_epsilons(initial_epsilon, final_epsilon, steps, decay=0.99, 
     return np.array(epsilons)
 
 
-def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=1, driver_number_dist=''):
+def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=0.1, driver_number_dist=''):
     """
     :param driver_info: the information of driver
     :type driver_info:  pandas.DataFrame
@@ -504,9 +504,11 @@ def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=1, dri
     :rtype:
     """
     # 当前并无随机抽样司机；后期若需要，可设置抽样模块生成sampled_driver_info
+    # Sample ratio was 1, set to 0.1
     new_driver_info = deepcopy(driver_info)
     sampled_driver_info = new_driver_info.sample(frac=driver_sample_ratio)
     sampled_driver_info['status'] = 3
+    sampled_driver_info['start_time'] = 0 # Delete this line if we want to simulate real start time
     loc_con = sampled_driver_info['start_time'] <= t_initial
     sampled_driver_info.loc[loc_con, 'status'] = 0
     sampled_driver_info['target_loc_lng'] = sampled_driver_info['lng']
@@ -649,7 +651,7 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
                 # weight转换为最大pickup distance - 当前pickup distance
                 request_array[:,-1] = maximal_pickup_distance - dis_array + 1
             flag = np.where(dis_array <= maximal_pickup_distance)[0]
-            print("len of flag: {d}", len(flag)) # TODO: delete this print
+            # print("len of flag: {d}", len(flag)) # TODO: delete this print
             if len(flag) > 0:
                 order_driver_pair = np.vstack(
                     [request_array[flag, 2], driver_loc_array[flag, 2], request_array[flag, 3], dis_array[flag]]).T
