@@ -122,9 +122,23 @@ if __name__ == '__main__':
     #     if data[item][0][13] or data[item][0][14]:
     #         print(data[item][0][13])
     #         print(data[item][0][14])
-    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
+    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_driver_info_11_29.pickle") 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        datalist = list(unpickled_data.keys())
+        # datalist = list(unpickled_data.keys())
         # print(len(unpickled_data[629880][0]))
-        datalist.sort()
-        print(datalist[100])
+        # datalist.sort()
+        # print(datalist[100])
+
+        # Driver file keys:
+        #     data = ['driver_id', 'start_time', 'end_time', 'lng', 'lat', 'node_id',
+        #    'grid_id', 'status', 'target_loc_lng', 'target_loc_lat',
+        #    'target_node_id', 'target_grid_id', 'remaining_time',
+        #    'matched_order_id', 'total_idle_time', 'time_to_last_cruising',
+        #    'current_road_node_index', 'remaining_time_for_current_node',
+        #    'itinerary_node_list', 'itinerary_segment_dis_list']
+        for entry in unpickled_data["status"]:
+            if entry == 0:
+                print("status is 0")
+        
+        
+        

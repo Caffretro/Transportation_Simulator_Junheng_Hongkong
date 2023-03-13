@@ -93,7 +93,7 @@ if __name__ == "__main__":
                                     waiting_time = 0
                                     for date in TEST_DATE_LIST:
                                         simulator.experiment_date = date
-                                        simulator.reset()
+                                        simulator.reset()            
                                         start_time = time.time()
                                         for step in range(simulator.finish_run_step):
                                             dispatch_transitions = simulator.rl_step(agent)

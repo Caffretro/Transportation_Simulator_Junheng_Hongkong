@@ -631,8 +631,13 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
     matched_pair_actual_indexs = []
     matched_itinerary = []
 
+    # TODO: delete this print
+    # print(num_idle_driver)
+
     if num_wait_request > 0 and num_idle_driver > 0:
-        
+        # TODO: delete the print below
+        # FIXME: Seems like num_wait_request will always be zero, and no order can be dispatched. However we do have new order
+        # print("order came in, {} wait requests and {} drivers idle.".format(num_wait_request, num_idle_driver))
         if dispatch_method == 'LD':
             # generate order driver pairs and corresponding itinerary
             request_array_temp = wait_requests.loc[:, ['origin_lng', 'origin_lat', 'order_id', 'weight']]
@@ -674,8 +679,6 @@ def order_dispatch(wait_requests, driver_table, maximal_pickup_distance=950, dis
             
             # TODO: delete the print above
     else:
-        # FIXME: both are 0, cannot enter the LD algorithm for matching
-        # print("num_wait_request: {s}, num_idle_driver: {s} ", num_wait_request, num_idle_driver)
         pass
     return matched_pair_actual_indexs, np.array(matched_itinerary)
 

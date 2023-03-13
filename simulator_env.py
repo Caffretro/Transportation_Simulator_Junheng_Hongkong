@@ -158,6 +158,7 @@ class Simulator:
         # TJ
 
         request_list = []
+
         for i in range(env_params['t_initial'],env_params['t_end']):
             try:
                 for j in self.request_databases[i]:
@@ -245,7 +246,7 @@ class Simulator:
             idle_drivers_pre[:len(kd)] = kd
             idle_drivers_pre += 1
 
-            # record total revenue of  wait_requests
+            # record total revenue of wait_requests
             self.avg_revenue_by_grid = np.zeros(side**2)
             group = self.wait_requests.loc[:, ['origin_grid_id', '_reward']].groupby('origin_grid_id')
             gsum = group.sum()
@@ -259,6 +260,7 @@ class Simulator:
         new_matched_requests = pd.DataFrame([], columns=self.request_columns)
         update_wait_requests = pd.DataFrame([], columns=self.request_columns)
         matched_pair_index_df = pd.DataFrame(matched_pair_actual_indexes, columns=['order_id', 'driver_id', 'weight', 'pickup_distance'])
+        
         # print("after order matched")
         # print("order duplicated flag:",matched_pair_index_df.order_id.duplicated().sum())
         # print("driver duplicated flag",matched_pair_index_df.driver_id.duplicated().sum())
@@ -489,10 +491,9 @@ class Simulator:
                 wait_info['trip_time'] = wait_info['trip_distance'] / self.vehicle_speed * 3600
                 wait_info['wait_time'] = 0
                 # TJ
-                wait_info['designed_reward'] = 2.5 + 0.5 * int(max(0,trip_distance*1000-322)/322)
+                wait_info['designed_reward'] = (27 + 1.9 * int(max(0, trip_distance * 1000 - 2000) / 200))if trip_distance > 7 else (93.5 + 1.3 * (trip_distance * 1000 - 7000) / 200)
                 
-                # TODO: change the pricing rule to Hong Kong rule
-                # 27 + 1.9 * int(max(0, trip_distance*1000 - ))
+                
 
                 # TJ
                 wait_info['status'] = 0
@@ -530,7 +531,6 @@ class Simulator:
                 # wait_info = wait_info.drop(columns=['trip_distance'])
                 # wait_info = wait_info.drop(columns=['designed_reward'])
                 self.wait_requests = pd.concat([self.wait_requests, wait_info], ignore_index=True)
-                print("order generation added to wait_requests, now we have {}".format(len(self.wait_requests))) # TODO: delete this print
 
         return
 
@@ -546,8 +546,10 @@ class Simulator:
             temp_request = []
             # TJ 当更换为按照日期训练时 进行调整
             min_time = max(env_params['t_initial'], self.time - self.request_interval)
+            # print("min_time: {}, self.time: {}".format(min_time, self.time)) TODO：delete this line
             for time in range(min_time, self.time):
                 if time in self.request_databases.keys():
+                    
                     temp_request.extend(self.request_databases[time])
             # temp_request = self.request_databases
         # TJ
@@ -667,8 +669,8 @@ class Simulator:
                 #     pick_params = pick_time_params_dict['other']
                 #     # price_increase_params = price_increase_params_dict['other']
 
-                wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60
-                wait_info['maximum_pickup_time_passenger_can_tolerate'] = skewed_normal_distribution(pick_params[0],pick_params[1],pick_params[2],pick_params[3],pick_params[4],len(wait_info)) * 60
+                # wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60
+                # wait_info['maximum_pickup_time_passenger_can_tolerate'] = skewed_normal_distribution(pick_params[0],pick_params[1],pick_params[2],pick_params[3],pick_params[4],len(wait_info)) * 60
 
                 wait_info['weight'] = weight_array # rl for matching
                 # add extra info of orders
@@ -689,7 +691,7 @@ class Simulator:
                 #wait_info['maximum_price_passenger_can_tolerate'] += skewed_normal_distribution(price_increase_params[0],price_increase_params[1],price_increase_params[2],price_increase_params[3],price_increase_params[4],len(wait_info))
                                
                 self.wait_requests = pd.concat([self.wait_requests, wait_info], ignore_index=True)
-                print("Current wait requests after added: {}".format(len(self.wait_requests))) # TODO: delete this print
+                # print("Current wait requests after added: {}".format(len(self.wait_requests))) # TODO: delete this print
             
                 # # statistics
                 self.total_request_num += wait_info.shape[0]
@@ -736,7 +738,10 @@ class Simulator:
         if self.cruise_flag:
             con_eligibe = (self.driver_table['time_to_last_cruising'] >= self.max_idle_time) & \
                           (self.driver_table['status'] == 0)
+            # print(con_eligibe) # TODO: delete this print
             eligible_driver_table = self.driver_table[con_eligibe]
+            # print(self.driver_table['status']) # TODO: delete this print
+            # FIXME: the problem is located as: no drivers are released to pickup orders
             eligible_driver_index = list(eligible_driver_table.index)
             if len(eligible_driver_index) > 0:
                 itinerary_node_list, itinerary_segment_dis_list, dis_array = \
