@@ -491,14 +491,18 @@ class Simulator:
                 wait_info['trip_time'] = wait_info['trip_distance'] / self.vehicle_speed * 3600
                 wait_info['wait_time'] = 0
                 # TJ
-                wait_info['designed_reward'] = (27 + 1.9 * int(max(0, trip_distance * 1000 - 2000) / 200))if trip_distance > 7 else (93.5 + 1.3 * (trip_distance * 1000 - 7000) / 200)
-                
-                
+                reward_list = []
+                for dis in trip_distance:
+                    # reward_list.append(2.5 + 0.5 * int(max(0,dis*1000-322)/322))
+                    reward_list.append((27 + 1.9 * int(max(0, dis * 1000 - 2000) / 200))
+                                        if dis > 7 else 
+                                        (93.5 + 1.3 * (dis * 1000 - 7000) / 200))
+                wait_info['designed_reward'] = reward_list
 
                 # TJ
                 wait_info['status'] = 0
                 # wait_info['maximum_wait_time'] = np.random.normal(self.maximum_wait_time_mean,
-                #
+                
                 #                                                    self.maximum_wait_time_std, len(wait_info))
                 # if self.time >= 25200 and self.time <=32400:
                 #     params = time_params_dict['morning']
@@ -510,8 +514,9 @@ class Simulator:
                 #     params = time_params_dict['other']
                 # wait_info['maximum_wait_time'].apply(skewed_normal_distribution(params[0],params[1],params[2],params[3],params[4]))
                 
-                print(wait_info['maximum_wait_time'])
-                print("**"*30)
+                # print(wait_info['maximum_wait_time'])
+                # print("**"*30)
+
                 wait_info['itinerary_segment_dis_list'] = itinerary_segment_dis_list
                 wait_info['weight'] = wait_info['trip_distance'] * 5
                 # add extra info of orders
@@ -1126,6 +1131,18 @@ class Simulator:
         self.matched_requests = pd.concat([self.matched_requests, df_new_matched_requests], axis=0)
         self.matched_requests = self.matched_requests.reset_index(drop=True)
         self.wait_requests = df_update_wait_requests.reset_index(drop=True)
+
+        if len(df_new_matched_requests) != 0:
+            self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
+            print("added reward in normal step, reward is {}".format(self.total_reward)) # TODO: delete this test print
+
+            # print("mean reward",df_new_matched_requests['designed_reward'].mean())
+            # print("max reward",df_new_matched_requests['designed_reward'].max())
+            # print("min reward",df_new_matched_requests['designed_reward'].min())
+            # print("total reward",self.total_reward)
+            # print("*"*10)
+        else:
+            self.total_reward += 0
 
         # Step 3: bootstrap new orders
         self.order_generation()
