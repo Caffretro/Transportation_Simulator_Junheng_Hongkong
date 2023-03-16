@@ -1,7 +1,7 @@
 env_params = {
 # time interval in seconds
-'t_initial' :86400,   # 3-9
-'t_end' : 86400 * 2, 
+'t_initial' :0,   # 3-9
+'t_end' : 86400 * 7.5, 
 'delta_t' : 5,  # s
 'vehicle_speed' : 22.788,   # km / h
 'repo_speed' :22.788, #目前的设定需要与vehicl speed保持一致
@@ -33,7 +33,7 @@ env_params = {
 # 'method': 'instant_reward_no_subway',
 'simulator_mode' : 'toy_mode',
 'experiment_mode' : 'test',
-'driver_num':500, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
+'driver_num':1000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
 'side':10,
 'price_per_km':5,  # ￥ / kmss
 'road_information_mode':'load',

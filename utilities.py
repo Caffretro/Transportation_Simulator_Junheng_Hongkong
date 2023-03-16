@@ -488,7 +488,7 @@ def get_exponential_epsilons(initial_epsilon, final_epsilon, steps, decay=0.99, 
     return np.array(epsilons)
 
 
-def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=0.1, driver_number_dist=''):
+def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=env_params['driver_sample_ratio'], driver_number_dist=''):
     """
     :param driver_info: the information of driver
     :type driver_info:  pandas.DataFrame
@@ -508,7 +508,7 @@ def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=0.1, d
     new_driver_info = deepcopy(driver_info)
     sampled_driver_info = new_driver_info.sample(frac=driver_sample_ratio)
     sampled_driver_info['status'] = 3
-    sampled_driver_info['start_time'] = 0 # TODO: Delete this line if we want to simulate real start time
+    # sampled_driver_info['start_time'] = 0 # TODO: Delete this line if we want to simulate real start time
     # FIXME: now the problem is stuck if we set start_time to 0
     loc_con = sampled_driver_info['start_time'] <= t_initial
     sampled_driver_info.loc[loc_con, 'status'] = 0

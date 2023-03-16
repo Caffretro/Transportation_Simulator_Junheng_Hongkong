@@ -115,20 +115,21 @@ def show_new_order(pth):
     print(order_df_per_day.head(10))
 
 if __name__ == '__main__':
-    # show_new_order("./input1/order-11-13-frac=0.1.pickle")
-    # Print out the pickle file
-    # data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
-    # data = pickle.load(open("./input_Hong_Kong/hongkong_driver_info_11_29.pickle", 'rb'))
-    # for item in data:
-    #     if data[item][0][13] or data[item][0][14]:
-    #         print(data[item][0][13])
-    #         print(data[item][0][14])
+    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
     unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_driver_info_11_29.pickle") 
+
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+        '''
+        Hong Kong orders start at 28800 and stops at 633539, there are 115055 orders in total
+        '''
         # datalist = list(unpickled_data.keys())
-        # print(len(unpickled_data[629880][0]))
+        # # print(len(unpickled_data[629880][0]))
         # datalist.sort()
-        # print(datalist[100])
+        # print(len(datalist))
+
+        '''
+        Hong Kong drivers start working 82211 and stops at 633591, there are 41504 drivers in total
+        '''
 
         # Driver file keys:
         #     data = ['driver_id', 'start_time', 'end_time', 'lng', 'lat', 'node_id',
@@ -142,11 +143,11 @@ if __name__ == '__main__':
         #         print("status is 3")
 
         print(len(unpickled_data["start_time"]))
-        # time_max = sys.maxsize
-        # for entry in unpickled_data["start_time"]:
-        #     if entry < time_max:
-        #         time_max = entry
-        # print(time_max)
+        time_min = -sys.maxsize
+        for entry in unpickled_data["start_time"]:
+            if entry > time_min:
+                time_min = entry
+        print(time_min)
         
         
         
