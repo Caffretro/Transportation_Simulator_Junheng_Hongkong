@@ -504,10 +504,9 @@ def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=env_pa
     :rtype:
     """
     # 当前并无随机抽样司机；后期若需要，可设置抽样模块生成sampled_driver_info
-    # Sample ratio was 1, set to 0.1
     new_driver_info = deepcopy(driver_info)
     sampled_driver_info = new_driver_info.sample(frac=driver_sample_ratio)
-    sampled_driver_info['status'] = 3
+    sampled_driver_info['status'] = 0
     # sampled_driver_info['start_time'] = 0 # TODO: Delete this line if we want to simulate real start time
     # FIXME: now the problem is stuck if we set start_time to 0
     loc_con = sampled_driver_info['start_time'] <= t_initial
