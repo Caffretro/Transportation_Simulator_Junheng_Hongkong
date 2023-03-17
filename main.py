@@ -96,7 +96,7 @@ if __name__ == "__main__":
                                         simulator.reset()            
                                         start_time = time.time()
                                         for step in range(simulator.finish_run_step):
-                                            dispatch_transitions = simulator.step()
+                                            dispatch_transitions = simulator.rl_step(agent)
                                             print("At step {}".format(step)) # TODO: delete this test print
                                         end_time = time.time()
 

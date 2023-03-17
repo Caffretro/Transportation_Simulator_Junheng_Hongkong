@@ -166,6 +166,7 @@ class Simulator:
             except:
                 pass
         # Hong Kong data added one list called extra
+        # TODO: figure out if this 
         column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                        'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
                        'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
@@ -272,8 +273,8 @@ class Simulator:
             matched_itinerary_df['pickup_distance'] = matched_itinerary[2]
 
         matched_order_id_list = matched_pair_index_df['order_id'].values.tolist()
-        con_matched = self.wait_requests['order_id'].isin(matched_order_id_list)
-        con_keep_wait = self.wait_requests['wait_time'] <= self.wait_requests['maximum_wait_time']
+        con_matched = self.wait_requests['order_id'].isin(matched_order_id_list) # users that have matched
+        con_keep_wait = self.wait_requests['wait_time'] <= self.wait_requests['maximum_wait_time'] # users that keep waiting
 
         # price and pickup time info which used to judge whether cancel the order-driver pair
         matched_itinerary_df['pickup_time'] = matched_itinerary_df['pickup_distance'].values / self.vehicle_speed * 3600
@@ -291,20 +292,21 @@ class Simulator:
             cor_driver = np.array(cor_driver)
             df_matched = df_matched.iloc[cor_order, :]
             # driver decide whether cancelled
-            # 现在暂时不让其取消。需考虑时可用self.driver_cancel_prob_array来计算
+            # 现在暂时不让其取消。需考虑时可用self.driver_cancel_prob_array来计算，所有driver都remain
             driver_cancel_prob = np.zeros(len(matched_pair_index_df))
             prob_array = np.random.rand(len(driver_cancel_prob))
             con_driver_remain = prob_array >= driver_cancel_prob
 
             # price and pickup time moudle which used to judge whether cancel the order-driver pair
             # matched_itinerary_df['pickup_time'].values
+            # if driver's pickup time is longer than passenger's max pickup time can tolerate, abort the match
             con_passenge_keep_wait = df_matched['maximum_pickup_time_passenger_can_tolerate'].values > \
                                                         matched_itinerary_df['pickup_time'].values
 
-
+            # TODO: we can optimize this part, no longer use multiple variables
             con_passenger_remain = con_passenge_keep_wait
             con_remain = con_driver_remain & con_passenger_remain
-            # order after cancelled
+            # order after cancelled; ~ means !
             update_wait_requests = df_matched[~con_remain]
 
             # driver after cancelled
@@ -502,7 +504,6 @@ class Simulator:
                 # TJ
                 wait_info['status'] = 0
                 wait_info['maximum_wait_time'] = np.random.normal(self.maximum_wait_time_mean,
-                
                                                                    self.maximum_wait_time_std, len(wait_info))
                 # if self.time >= 25200 and self.time <=32400:
                 #     params = time_params_dict['morning']
@@ -657,21 +658,21 @@ class Simulator:
                 wait_info['status'] = 0
                 wait_params = None
                 # # comment the code below if training Manhattan data
-                if self.time >= 25200 and self.time <=32400:
-                    wait_params = wait_time_params_dict['morning']                
-                    pick_params = pick_time_params_dict['morning']
-                    # price_increase_params = price_increase_params_dict['morning']
-                elif self.time >= 61200 and self.time <= 68400:
-                    wait_params = wait_time_params_dict['evening']
-                    pick_params = pick_time_params_dict['evening']
-                    # price_increase_params = price_increase_params_dict['evening']
-                elif self.time >= 0 and self.time <= 18000:
-                    wait_params = wait_time_params_dict['midnight_early']
-                    pick_params = pick_time_params_dict['midnight_early']
-                    # price_increase_params = price_increase_params_dict['midnight_early']
-                else:
-                    wait_params = wait_time_params_dict['other']
-                    pick_params = pick_time_params_dict['other']
+                # if self.time >= 25200 and self.time <=32400:
+                #     wait_params = wait_time_params_dict['morning']                
+                #     pick_params = pick_time_params_dict['morning']
+                #     # price_increase_params = price_increase_params_dict['morning']
+                # elif self.time >= 61200 and self.time <= 68400:
+                #     wait_params = wait_time_params_dict['evening']
+                #     pick_params = pick_time_params_dict['evening']
+                #     # price_increase_params = price_increase_params_dict['evening']
+                # elif self.time >= 0 and self.time <= 18000:
+                #     wait_params = wait_time_params_dict['midnight_early']
+                #     pick_params = pick_time_params_dict['midnight_early']
+                #     # price_increase_params = price_increase_params_dict['midnight_early']
+                # else:
+                #     wait_params = wait_time_params_dict['other']
+                #     pick_params = pick_time_params_dict['other']
                     # price_increase_params = price_increase_params_dict['other']
 
                 wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60
@@ -740,9 +741,11 @@ class Simulator:
                 self.driver_table.loc[eligible_driver_index, 'target_loc_lng'] = lng_array
                 self.driver_table.loc[eligible_driver_index, 'target_loc_lat'] = lat_array
                 self.driver_table.loc[eligible_driver_index, 'target_grid_id'] = grid_id_array
-        if self.cruise_flag:
+        if self.cruise_flag: 
+            # TODO: add judgement by self.time within driver's start and end time
             con_eligibe = (self.driver_table['time_to_last_cruising'] >= self.max_idle_time) & \
-                          (self.driver_table['status'] == 0)
+                          (self.driver_table['status'] == 0) & (self.time < self.driver_table['end_time']) & \
+                          (self.time > self.driver_table['start_time'])
             # print(con_eligibe) # TODO: delete this print
             eligible_driver_table = self.driver_table[con_eligibe]
             # print(self.driver_table['status']) # TODO: delete this print
