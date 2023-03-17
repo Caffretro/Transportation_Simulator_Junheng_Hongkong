@@ -501,9 +501,9 @@ class Simulator:
 
                 # TJ
                 wait_info['status'] = 0
-                # wait_info['maximum_wait_time'] = np.random.normal(self.maximum_wait_time_mean,
+                wait_info['maximum_wait_time'] = np.random.normal(self.maximum_wait_time_mean,
                 
-                #                                                    self.maximum_wait_time_std, len(wait_info))
+                                                                   self.maximum_wait_time_std, len(wait_info))
                 # if self.time >= 25200 and self.time <=32400:
                 #     params = time_params_dict['morning']
                 # elif self.time >= 61200 and self.time <= 68400:
