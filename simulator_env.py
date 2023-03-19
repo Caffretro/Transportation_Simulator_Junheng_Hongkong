@@ -166,7 +166,7 @@ class Simulator:
             except:
                 pass
         # Hong Kong data added one list called extra
-        # TODO: figure out if this 
+        # TODO: added extra, now testing if deleting it will help
         column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                        'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
                        'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
@@ -176,6 +176,10 @@ class Simulator:
             self.dispatch_transitions_buffer = [np.array([]).reshape([0, 2]), np.array([]), np.array([]).reshape([0, 2]),
                                             np.array([]).astype(float)]  # rl for matching
         self.requests = pd.DataFrame(request_list,columns=column_name)
+
+        # dropping the 'extra' column
+        self.requests.drop(columns=['extra']) # TODO: figure out a better way to drop
+
         trip_distance = self.requests['trip_distance'].values.tolist()
         reward_list = []
         for dis in trip_distance:
@@ -455,6 +459,7 @@ class Simulator:
 
             # generate complete information for new orders
 
+            # TODO: added extra, testing if deleting it will work
             column_name = ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
                            'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
                            'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob', 'extra']
@@ -487,6 +492,7 @@ class Simulator:
                 #     itinerary_node_list[j].pop()
                 # print("iti",itinerary_segment_dis_list)
                 wait_info = pd.DataFrame(sampled_requests, columns=column_name)
+                wait_info.drop(columns=['extra']) # TODO: figure out a better way to drop
                 wait_info['itinerary_node_list'] = itinerary_node_list
                 wait_info['start_time'] = self.time
                 wait_info['trip_distance'] = trip_distance
@@ -603,6 +609,7 @@ class Simulator:
                         print(itinerary_node)
 
                 wait_info = pd.DataFrame(sampled_requests, columns=column_name)
+                wait_info.drop(columns=['extra']) # TODO: figure out a better way to drop
                 wait_info['itinerary_node_list'] = itinerary_node_list
                 wait_info['start_time'] = self.time
                 wait_info['trip_distance'] = trip_distance
@@ -658,21 +665,21 @@ class Simulator:
                 wait_info['status'] = 0
                 wait_params = None
                 # # comment the code below if training Manhattan data
-                # if self.time >= 25200 and self.time <=32400:
-                #     wait_params = wait_time_params_dict['morning']                
-                #     pick_params = pick_time_params_dict['morning']
-                #     # price_increase_params = price_increase_params_dict['morning']
-                # elif self.time >= 61200 and self.time <= 68400:
-                #     wait_params = wait_time_params_dict['evening']
-                #     pick_params = pick_time_params_dict['evening']
-                #     # price_increase_params = price_increase_params_dict['evening']
-                # elif self.time >= 0 and self.time <= 18000:
-                #     wait_params = wait_time_params_dict['midnight_early']
-                #     pick_params = pick_time_params_dict['midnight_early']
-                #     # price_increase_params = price_increase_params_dict['midnight_early']
-                # else:
-                #     wait_params = wait_time_params_dict['other']
-                #     pick_params = pick_time_params_dict['other']
+                if self.time >= 25200+86400 and self.time <=32400+86400:
+                    wait_params = wait_time_params_dict['morning']                
+                    pick_params = pick_time_params_dict['morning']
+                    # price_increase_params = price_increase_params_dict['morning']
+                elif self.time >= 61200+86400 and self.time <= 68400+86400:
+                    wait_params = wait_time_params_dict['evening']
+                    pick_params = pick_time_params_dict['evening']
+                    # price_increase_params = price_increase_params_dict['evening']
+                elif self.time >= 0+86400 and self.time <= 18000+86400:
+                    wait_params = wait_time_params_dict['midnight_early']
+                    pick_params = pick_time_params_dict['midnight_early']
+                    # price_increase_params = price_increase_params_dict['midnight_early']
+                else:
+                    wait_params = wait_time_params_dict['other']
+                    pick_params = pick_time_params_dict['other']
                     # price_increase_params = price_increase_params_dict['other']
 
                 wait_info['maximum_wait_time'] = skewed_normal_distribution(wait_params[0],wait_params[1],wait_params[2],wait_params[3],wait_params[4],len(wait_info)) * 60

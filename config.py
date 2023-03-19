@@ -1,7 +1,7 @@
 env_params = {
 # time interval in seconds
-'t_initial' :0,   # 3-9
-'t_end' : 648000, # 7.5 days
+'t_initial' :86400,   # 3-9
+'t_end' : 86400*2, # 7.5 days
 'delta_t' : 5,  # s
 'vehicle_speed' : 22.788,   # km / h
 'repo_speed' :22.788, #目前的设定需要与vehicl speed保持一致

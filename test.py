@@ -115,8 +115,8 @@ def show_new_order(pth):
     print(order_df_per_day.head(10))
 
 if __name__ == '__main__':
-    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
-    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_driver_info_11_29.pickle") 
+    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
+    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_driver_info_11_29.pickle") 
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
         '''
@@ -125,8 +125,9 @@ if __name__ == '__main__':
         # ['order_id', 'origin_id', 'origin_lat', 'origin_lng', 'dest_id', 'dest_lat', 'dest_lng',
         #    'trip_distance', 'start_time', 'origin_grid_id', 'dest_grid_id', 'itinerary_node_list',
         #    'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob']
-        datalist = list(unpickled_data.keys())
-        print(unpickled_data[464198])
+        # datalist = list(unpickled_data.keys())
+        # # print(len(unpickled_data[464198][0]))
+        # print(datalist)
         # datalist.sort()
         # print(len(datalist))
 
@@ -144,6 +145,9 @@ if __name__ == '__main__':
         # for entry in unpickled_data["status"]:
         #     if entry == 3:
         #         print("status is 3")
+
+        print(unpickled_data.keys())
+        print(unpickled_data.iloc[404])
 
         # print(len(unpickled_data["start_time"]))
         # time_min = -sys.maxsize

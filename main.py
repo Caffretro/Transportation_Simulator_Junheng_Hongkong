@@ -97,7 +97,8 @@ if __name__ == "__main__":
                                         start_time = time.time()
                                         for step in range(simulator.finish_run_step):
                                             dispatch_transitions = simulator.rl_step(agent)
-                                            print("At step {}".format(step)) # TODO: delete this test print
+                                            if step % 10 == 0:
+                                                print("At step {}".format(step)) # TODO: delete this test print
                                         end_time = time.time()
 
                                         total_reward += simulator.total_reward
