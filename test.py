@@ -142,19 +142,22 @@ if __name__ == '__main__':
         #    'matched_order_id', 'total_idle_time', 'time_to_last_cruising',
         #    'current_road_node_index', 'remaining_time_for_current_node',
         #    'itinerary_node_list', 'itinerary_segment_dis_list']
+        
+        # status_counter = 0
         # for entry in unpickled_data["status"]:
-        #     if entry == 3:
-        #         print("status is 3")
+        #     if entry == 0:
+        #         status_counter += 1
+        # print(status_counter)
 
-        print(unpickled_data.keys())
-        print(unpickled_data.iloc[404])
+        # print(unpickled_data.keys())
+        # print(unpickled_data.iloc[404])
 
-        # print(len(unpickled_data["start_time"]))
-        # time_min = -sys.maxsize
-        # for entry in unpickled_data["start_time"]:
-        #     if entry > time_min:
-        #         time_min = entry
-        # print(time_min)
+        print(len(unpickled_data["start_time"]))
+        time_min = sys.maxsize
+        for entry in unpickled_data["start_time"]:
+            if entry < time_min:
+                time_min = entry
+        print(time_min)
         
         
         

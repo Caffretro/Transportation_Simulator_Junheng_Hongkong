@@ -33,7 +33,7 @@ env_params = {
 # 'method': 'instant_reward_no_subway',
 'simulator_mode' : 'toy_mode',
 'experiment_mode' : 'test',
-'driver_num':1000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
+'driver_num':2000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
 'side':10,
 'price_per_km':5,  # ￥ / kmss
 'road_information_mode':'load',
