@@ -152,12 +152,30 @@ if __name__ == '__main__':
         # print(unpickled_data.keys())
         # print(unpickled_data.iloc[404])
 
-        print(len(unpickled_data["start_time"]))
-        time_min = sys.maxsize
-        for entry in unpickled_data["start_time"]:
-            if entry < time_min:
-                time_min = entry
-        print(time_min)
+        # print(len(unpickled_data["start_time"]))
+        # time_min = sys.maxsize
+        # for entry in unpickled_data["start_time"]:
+        #     if entry < time_min:
+        #         time_min = entry
+        # print(time_min)
+        pass
+    
+    DATE_LIST = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8']
+
+    # for idx, day in enumerate(DATE_LIST):
+    #     print(str(day), idx)
+
+    loaded_data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
         
-        
+    requests = {}
+    for second in loaded_data.keys():
+        for idx, day in enumerate(DATE_LIST):
+            if int(idx) <= int(second / 86400) < int(idx + 1):
+                if day not in requests.keys():
+                    requests[day] = {second: loaded_data[second]}
+                else:
+                    requests[day].update({second: loaded_data[second]})
+    # test_save_data = pickle.dump(requests, open("./input_Hong_Kong/hongkong_date_based_processed_order_11_29.pickle", 'wb'))
+    # loaded_test_data = pickle.load(open("./input_Hong_Kong/test_using_date.pickle", 'rb'))
+    # print(sorted(loaded_test_data['day1'].keys()))
         

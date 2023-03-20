@@ -150,11 +150,11 @@ class Simulator:
 
         # construct order tabledd
         # TJ
-        # if self.experiment_date in self.request_all.keys():
-        #     self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
-        # else:
-        #     self.request_databases = []
-        self.request_databases = deepcopy(self.request_all)
+        if self.experiment_date in self.request_all.keys():
+            self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
+        else:
+            self.request_databases = []
+        # self.request_databases = deepcopy(self.request_all)
         # TJ
 
         request_list = []
@@ -561,7 +561,6 @@ class Simulator:
             # print("min_time: {}, self.time: {}".format(min_time, self.time)) TODO：delete this line
             for time in range(min_time, self.time):
                 if time in self.request_databases.keys():
-                    
                     temp_request.extend(self.request_databases[time])
             # temp_request = self.request_databases
         # TJ

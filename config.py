@@ -26,7 +26,7 @@ env_params = {
 'reposition_mode': '',
 'track_recording_flag' : True,
 'driver_far_matching_cancel_prob_file' : 'driver_far_matching_cancel_prob',
-'request_file_name' : './input_Hong_Kong/hongkong_processed_order_11_29', #'toy_requests',
+'request_file_name' : './input_Hong_Kong/hongkong_date_based_processed_order_11_29', #'toy_requests',
 'driver_file_name' : './input_Hong_Kong/hongkong_driver_info_11_29',
 'road_network_file_name' : 'road_network_information.pickle',
 'dispatch_method': 'LD', #LD: lagarange decomposition method designed by Peibo Duan
@@ -102,5 +102,6 @@ PRE_STEP = 0
 #  rl for matching
 TRAIN_DATE_LIST = ['2015-05-04','2015-05-05','2015-05-06','2015-05-07','2015-05-08',]
 
-TEST_DATE_LIST = ['2015-05-11']#['2015-05-11', '2015-05-12', '2015-05-13', '2015-05-14', '2015-05-15']
+TEST_DATE_LIST = ['day2'] #['2015-05-11', '2015-05-12', '2015-05-13', '2015-05-14', '2015-05-15']
+# TODO: switch to ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8'], and change back the original loading function
 #  rl for matching
