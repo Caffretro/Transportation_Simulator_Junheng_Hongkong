@@ -127,7 +127,6 @@ if __name__ == '__main__':
         #    'itinerary_segment_dis_list', 'trip_time', 'designed_reward', 'cancel_prob']
         # datalist = list(unpickled_data.keys())
         # # print(len(unpickled_data[464198][0]))
-        # print(datalist)
         # datalist.sort()
         # print(len(datalist))
 
@@ -142,6 +141,10 @@ if __name__ == '__main__':
         #    'matched_order_id', 'total_idle_time', 'time_to_last_cruising',
         #    'current_road_node_index', 'remaining_time_for_current_node',
         #    'itinerary_node_list', 'itinerary_segment_dis_list']
+        # The first driver that will go online is at 82211 
+        # The first order comes in at 28800
+        # Push back the start and endtime of all drivers by 53411
+
         
         # status_counter = 0
         # for entry in unpickled_data["status"]:
@@ -158,24 +161,28 @@ if __name__ == '__main__':
         #     if entry < time_min:
         #         time_min = entry
         # print(time_min)
+        # print(unpickled_data['start_time'])
         pass
     
-    DATE_LIST = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8']
+    # DATE_LIST = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8']
 
     # for idx, day in enumerate(DATE_LIST):
     #     print(str(day), idx)
 
-    loaded_data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
+    # loaded_data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
         
-    requests = {}
-    for second in loaded_data.keys():
-        for idx, day in enumerate(DATE_LIST):
-            if int(idx) <= int(second / 86400) < int(idx + 1):
-                if day not in requests.keys():
-                    requests[day] = {second: loaded_data[second]}
-                else:
-                    requests[day].update({second: loaded_data[second]})
+    # requests = {}
+    # for second in loaded_data.keys():
+    #     for idx, day in enumerate(DATE_LIST):
+    #         if int(idx) <= int(second / 86400) < int(idx + 1):
+    #             if day not in requests.keys():
+    #                 requests[day] = {second: loaded_data[second]}
+    #             else:
+    #                 requests[day].update({second: loaded_data[second]})
     # test_save_data = pickle.dump(requests, open("./input_Hong_Kong/hongkong_date_based_processed_order_11_29.pickle", 'wb'))
     # loaded_test_data = pickle.load(open("./input_Hong_Kong/test_using_date.pickle", 'rb'))
     # print(sorted(loaded_test_data['day1'].keys()))
+
+    loaded_data = pickle.load(open("./input_Hong_Kong/hongkong_driver_info_11_29.pickle", 'rb'))
+    
         
