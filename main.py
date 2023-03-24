@@ -55,7 +55,7 @@ if __name__ == "__main__":
                                                'matched_short_request_ratio',
                                                'matched_request_ratio']
                                 
-                                test_num = 10 # TODO: make it smaller, run once 
+                                test_num = 1 # TODO: make it smaller, run once 
                                 test_interval = 20
                                 threshold = 5
                                 df = pd.DataFrame(np.zeros([test_num, len(column_list)]), columns=column_list)
