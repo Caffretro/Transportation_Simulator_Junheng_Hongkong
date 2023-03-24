@@ -137,6 +137,7 @@ if __name__ == "__main__":
                                     print("wait",waiting_time)
                                     print("matching ratio",matched_request_num/total_request_num)
                                     print("ocu",occupancy_rate)
+                                    print("start time: {}; end time: {}".format(start_time, end_time))
                                     record_array = np.array(
                                         [total_reward, matched_request_num,
                                           long_request_num, matched_long_request_num,
