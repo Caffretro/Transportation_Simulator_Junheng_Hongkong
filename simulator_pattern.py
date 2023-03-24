@@ -35,7 +35,7 @@ class SimulatorPattern(object):
             self.request_all = pickle.load(open(data_path + self.request_file_name + '.pickle', 'rb'))
 
             self.driver_info = pickle.load(open(load_path + self.driver_file_name + '.pickle', 'rb'))
-            self.driver_info = self.driver_info.sample(n=env_params['driver_num'],replace=False) # number of drivers
+            # self.driver_info = self.driver_info.sample(n=env_params['driver_num'],replace=False) # number of drivers
             # TODO: move the pricing rule here
             
             # self.driver_info = self.driver_info.sample(n=env_params['driver_num'])
