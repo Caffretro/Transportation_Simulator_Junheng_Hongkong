@@ -97,7 +97,7 @@ if __name__ == "__main__":
                                         start_time = time.time()
                                         for step in range(simulator.finish_run_step):
                                             dispatch_transitions = simulator.rl_step(agent)
-                                            if step % 10 == 0:
+                                            if step % 1000 == 0:
                                                 print("At step {}".format(step)) # TODO: delete this test print
                                         end_time = time.time()
 
