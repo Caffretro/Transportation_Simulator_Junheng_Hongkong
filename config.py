@@ -1,7 +1,7 @@
 env_params = {
 # time interval in seconds
 't_initial' :0,   # 3-9
-'t_end' : int(86400 * 7.5), # 7.5 days
+'t_end' : int(86400 * 1), # 7.5 days
 'delta_t' : 5,  # s
 'vehicle_speed' : 22.788,   # km / h
 'repo_speed' :22.788, #目前的设定需要与vehicl speed保持一致
@@ -26,14 +26,14 @@ env_params = {
 'reposition_mode': '',
 'track_recording_flag' : True,
 'driver_far_matching_cancel_prob_file' : 'driver_far_matching_cancel_prob',
-'request_file_name' : './input_Hong_Kong/hongkong_date_based_processed_order_11_29', #'toy_requests',
-'driver_file_name' : './input_Hong_Kong/hongkong_driver_info_11_29',
+'request_file_name' : './input_Hong_Kong/hongkong_processed_order_11_29', #'toy_requests',
+'driver_file_name' : './input_Hong_Kong/hongkong_driver_info',
 'road_network_file_name' : 'road_network_information.pickle',
 'dispatch_method': 'LD', #LD: lagarange decomposition method designed by Peibo Duan
 # 'method': 'instant_reward_no_subway',
 'simulator_mode' : 'toy_mode',
 'experiment_mode' : 'test',
-'driver_num':2000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
+'driver_num':5000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
 'side':10,
 'price_per_km':5,  # ￥ / kmss
 'road_information_mode':'load',

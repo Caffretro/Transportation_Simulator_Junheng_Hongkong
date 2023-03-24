@@ -6,6 +6,9 @@ __pycache__/
 # ignore pickle files
 *.pickle
 
+# ignore debug.txt
+debug.txt
+
 # ignore DS_Store
 .DS_Store
 

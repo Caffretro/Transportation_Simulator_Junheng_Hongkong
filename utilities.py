@@ -509,8 +509,8 @@ def sample_all_drivers(driver_info, t_initial, t_end, driver_sample_ratio=env_pa
 
     # since hong_kong driver online time too late, let them work earlier
     # earliest order comes in at 28800, first driver online at 82211. push back 53400
-    sampled_driver_info['start_time'] = sampled_driver_info['start_time'] - 53400
-    sampled_driver_info['end_time'] = sampled_driver_info['end_time'] - 53400
+    # sampled_driver_info['start_time'] = sampled_driver_info['start_time'] - 53400
+    # sampled_driver_info['end_time'] = sampled_driver_info['end_time'] - 53400
 
     sampled_driver_info['status'] = 0
     # sampled_driver_info['start_time'] = 0 # TODO: Delete this line if we want to simulate real start time

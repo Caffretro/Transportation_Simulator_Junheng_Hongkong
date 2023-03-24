@@ -150,11 +150,11 @@ class Simulator:
 
         # construct order tabledd
         # TJ
-        if self.experiment_date in self.request_all.keys():
-            self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
-        else:
-            self.request_databases = []
-        # self.request_databases = deepcopy(self.request_all)
+        # if self.experiment_date in self.request_all.keys():
+        #     self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
+        # else:
+        #     self.request_databases = []
+        self.request_databases = deepcopy(self.request_all)
         # TJ
 
         request_list = []
@@ -750,11 +750,11 @@ class Simulator:
         if self.cruise_flag: 
             # TODO: add judgement by self.time within driver's start and end time
             con_eligibe = (self.driver_table['time_to_last_cruising'] >= self.max_idle_time) & \
-                          (self.driver_table['status'] == 0) & (self.time < self.driver_table['end_time']) & \
-                          (self.time > self.driver_table['start_time'])
+                          (self.driver_table['status'] == 0) & (self.time <= self.driver_table['end_time']) & \
+                          (self.time >= self.driver_table['start_time'])
             # print(con_eligibe) # TODO: delete this print
             eligible_driver_table = self.driver_table[con_eligibe]
-            # print(self.driver_table['status']) # TODO: delete this print
+            # print("Length of eligible_driver_table: {}".format(len(eligible_driver_table))) # TODO: delete this print
             # FIXME: the problem is located as: no drivers are released to pickup orders
             eligible_driver_index = list(eligible_driver_table.index)
             if len(eligible_driver_index) > 0:
