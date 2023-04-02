@@ -49,6 +49,11 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["route_network"]
    
 mycollect = mydb['route_list']
+# Check whether MongoDB client is successfully connected
+if myclient.is_primary:
+    print("Connected to MongoDB!")
+else:
+    print("Failed to connect to MongoDB.")
 
 # define the function to get zone_id of segment node
 def get_zone(lat, lng):
@@ -334,6 +339,7 @@ def route_generation_array(origin_coord_array, dest_coord_array, mode='rg'):
                 'node': str(origin) + str(dest)
             }
             re = mycollect.find_one(data)
+            # TODO: check whether we have obtained graph data from graph ml
             if re:
                 ite = [int(item) for item in re['itinerary_node_list'].strip('[').strip(']').split(', ')]
             else:

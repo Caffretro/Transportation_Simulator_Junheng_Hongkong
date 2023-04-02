@@ -14,7 +14,8 @@ from matplotlib import pyplot as plt
 # python D:\Feng\drl_subway_comp\main.py
 
 if __name__ == "__main__":
-    driver_num = [100]
+    # this is where we adjust driver num
+    driver_num = [5000]
     max_distance_num = [1]
 
     cruise_flag = [True]
@@ -97,7 +98,7 @@ if __name__ == "__main__":
                                         start_time = time.time()
                                         for step in range(simulator.finish_run_step):
                                             dispatch_transitions = simulator.rl_step(agent)
-                                            if step % 10 == 0:
+                                            if step % 100 == 0:
                                                 print("At step {}".format(step)) # TODO: delete this test print
                                         end_time = time.time()
 

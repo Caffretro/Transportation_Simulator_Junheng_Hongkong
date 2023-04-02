@@ -1,7 +1,7 @@
 env_params = {
 # time interval in seconds
-'t_initial' :30000,   # 3-9
-'t_end' : int(33600), # 7.5 days
+'t_initial' : 0,   # 3-9
+'t_end' : 86400, # 7.5 days
 'delta_t' : 5,  # s
 'vehicle_speed' : 22.788,   # km / h
 'repo_speed' :22.788, #目前的设定需要与vehicl speed保持一致
@@ -24,9 +24,9 @@ env_params = {
 'reposition_flag': False,
 'eligible_time_for_reposition' : 300, # s
 'reposition_mode': '',
-'track_recording_flag' : True,
+'track_recording_flag' : False,
 'driver_far_matching_cancel_prob_file' : 'driver_far_matching_cancel_prob',
-'request_file_name' : './input_Hong_Kong/hongkong_processed_order_11_29', #'toy_requests',
+'request_file_name' : './input_Hong_Kong/hongkong_date_based_order_test', #'toy_requests',
 'driver_file_name' : './input_Hong_Kong/hongkong_driver_info',
 'road_network_file_name' : 'road_network_information.pickle',
 'dispatch_method': 'LD', #LD: lagarange decomposition method designed by Peibo Duan
@@ -34,6 +34,9 @@ env_params = {
 'simulator_mode' : 'toy_mode',
 'experiment_mode' : 'test',
 'driver_num':5000, # how many drivers to sample from driver list, start from 500 maybe, add 500 each time
+# FIXME: notice that only changing driver_num won't affect the actual sampling ratio in simulator_pattern,
+# since it utilizes 'single_driver_num' defined in main.py as sampling parameter. If we really want to change
+# the number of drivers sampled, go to main.py's very first lines to change driver_num manually
 'side':10,
 'price_per_km':5,  # ￥ / kmss
 'road_information_mode':'load',
@@ -102,6 +105,6 @@ PRE_STEP = 0
 #  rl for matching
 TRAIN_DATE_LIST = ['2015-05-04','2015-05-05','2015-05-06','2015-05-07','2015-05-08',]
 
-TEST_DATE_LIST = ['day2'] #['2015-05-11', '2015-05-12', '2015-05-13', '2015-05-14', '2015-05-15']
+TEST_DATE_LIST = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8'] #['2015-05-11', '2015-05-12', '2015-05-13', '2015-05-14', '2015-05-15']
 # TODO: switch to ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8'], and change back the original loading function
 #  rl for matching

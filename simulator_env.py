@@ -150,11 +150,11 @@ class Simulator:
 
         # construct order tabledd
         # TJ
-        # if self.experiment_date in self.request_all.keys():
-        #     self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
-        # else:
-        #     self.request_databases = []
-        self.request_databases = deepcopy(self.request_all)
+        if self.experiment_date in self.request_all.keys():
+            self.request_databases = deepcopy(self.request_all[self.experiment_date])  # 这里取出来之后是个list
+        else:
+            self.request_databases = []
+        # self.request_databases = deepcopy(self.request_all)
         # TJ
 
         request_list = []
@@ -1217,7 +1217,7 @@ class Simulator:
         # TJ
         if len(df_new_matched_requests) != 0:
             self.total_reward += np.sum(df_new_matched_requests['designed_reward'].values)
-            # print("added reward in rl step, reward is {}".format(self.total_reward)) # TODO: delete this test print
+            print("added reward in rl step, reward is {}".format(self.total_reward)) # TODO: delete this test print
 
             # print("mean reward",df_new_matched_requests['designed_reward'].mean())
             # print("max reward",df_new_matched_requests['designed_reward'].max())

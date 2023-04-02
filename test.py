@@ -115,8 +115,8 @@ def show_new_order(pth):
     print(order_df_per_day.head(10))
 
 if __name__ == '__main__':
-    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
-    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_date_based_processed_order_11_29.pickle")
+    # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_processed_order_11_29.pickle") 
+    unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_date_based_order_test.pickle")
     # unpickled_data = pd.read_pickle("./input_Hong_Kong/hongkong_driver_info.pickle") 
 
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -141,7 +141,10 @@ if __name__ == '__main__':
         # print("irregular count: {}".format(counter))
 
         # print(unpickled_data.keys())
-        print(len(unpickled_data))
+        # print(len(unpickled_data))
+        for key in sorted(unpickled_data.keys()):
+            print(len(unpickled_data[key]))
+            # print(unpickled_data[key])
 
         '''
         Hong Kong drivers start working 82211 and stops at 633591, there are 41504 drivers in total
@@ -177,10 +180,10 @@ if __name__ == '__main__':
         # print(unpickled_data['start_time'])
         pass
 
-    
     # DATE_LIST = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8']
 
     # loaded_data = pickle.load(open("./input_Hong_Kong/hongkong_processed_order_11_29.pickle", 'rb'))
+    # print(loaded_data)
     # # loaded_test_data = pickle.load(open("./input_Hong_Kong/hongkong_date_based_processed_order_11_29.pickle", 'rb'))
     # requests = {}
     # for second in loaded_data.keys():
